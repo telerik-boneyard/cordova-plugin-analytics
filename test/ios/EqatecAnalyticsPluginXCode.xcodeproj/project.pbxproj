@@ -11,8 +11,8 @@
 		2D055B121806958900CED2AC /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D055B111806958900CED2AC /* XCTest.framework */; };
 		2D055B131806958900CED2AC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D055B031806958800CED2AC /* Foundation.framework */; };
 		2D055B181806958900CED2AC /* libEqatecAnalyticsPluginXCode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D055B001806958800CED2AC /* libEqatecAnalyticsPluginXCode.a */; };
-		2D763C0F1816643E0089B237 /* libEQATECAnalyticsMonitoriOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D763C0E1816643E0089B237 /* libEQATECAnalyticsMonitoriOS.a */; };
-		2DE88D8A1807FF6E00FF4E5F /* EqatecAnalyticsPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE88D891807FF6E00FF4E5F /* EqatecAnalyticsPlugin.m */; };
+		857B070B1A3F244A00C764A2 /* libEQATECAnalyticsMonitoriOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 857B070A1A3F244A00C764A2 /* libEQATECAnalyticsMonitoriOS.a */; };
+		857B070E1A3F247200C764A2 /* EqatecAnalyticsPlugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 857B070D1A3F247200C764A2 /* EqatecAnalyticsPlugin.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,10 +43,10 @@
 		2D055B071806958800CED2AC /* EqatecAnalyticsPluginXCode-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EqatecAnalyticsPluginXCode-Prefix.pch"; sourceTree = "<group>"; };
 		2D055B101806958900CED2AC /* EqatecAnalyticsPluginXCodeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EqatecAnalyticsPluginXCodeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D055B111806958900CED2AC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		2D763C0D181166710089B237 /* EQATECAnalyticsMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EQATECAnalyticsMonitor.h; path = ../../../../Cpp/Apple/Core/EQATECAnalyticsMonitor.h; sourceTree = "<group>"; };
-		2D763C0E1816643E0089B237 /* libEQATECAnalyticsMonitoriOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEQATECAnalyticsMonitoriOS.a; path = ../../../Cpp/Apple/iOS/EQATECAnalyticsMonitoriOS/framework/libEQATECAnalyticsMonitoriOS.a; sourceTree = "<group>"; };
-		2DE88D881807FF6E00FF4E5F /* EqatecAnalyticsPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EqatecAnalyticsPlugin.h; path = ../../EqatecAnalytics/src/ios/EqatecAnalyticsPlugin.h; sourceTree = "<group>"; };
-		2DE88D891807FF6E00FF4E5F /* EqatecAnalyticsPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EqatecAnalyticsPlugin.m; path = ../../EqatecAnalytics/src/ios/EqatecAnalyticsPlugin.m; sourceTree = "<group>"; };
+		857B070A1A3F244A00C764A2 /* libEQATECAnalyticsMonitoriOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libEQATECAnalyticsMonitoriOS.a; path = ../../plugin/lib/ios/libEQATECAnalyticsMonitoriOS.a; sourceTree = "<group>"; };
+		857B070C1A3F247200C764A2 /* EqatecAnalyticsPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EqatecAnalyticsPlugin.h; path = ../../../plugin/src/ios/EqatecAnalyticsPlugin.h; sourceTree = "<group>"; };
+		857B070D1A3F247200C764A2 /* EqatecAnalyticsPlugin.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EqatecAnalyticsPlugin.mm; path = ../../../plugin/src/ios/EqatecAnalyticsPlugin.mm; sourceTree = "<group>"; };
+		857B070F1A3F248900C764A2 /* EQATECAnalyticsMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EQATECAnalyticsMonitor.h; path = ../../../plugin/lib/ios/EQATECAnalyticsMonitor.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D763C0F1816643E0089B237 /* libEQATECAnalyticsMonitoriOS.a in Frameworks */,
+				857B070B1A3F244A00C764A2 /* libEQATECAnalyticsMonitoriOS.a in Frameworks */,
 				2D055B041806958800CED2AC /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,7 +93,7 @@
 		2D055B021806958800CED2AC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2D763C0E1816643E0089B237 /* libEQATECAnalyticsMonitoriOS.a */,
+				857B070A1A3F244A00C764A2 /* libEQATECAnalyticsMonitoriOS.a */,
 				2D055B031806958800CED2AC /* Foundation.framework */,
 				2D055B111806958900CED2AC /* XCTest.framework */,
 			);
@@ -103,9 +103,9 @@
 		2D055B051806958800CED2AC /* EqatecAnalyticsPluginXCode */ = {
 			isa = PBXGroup;
 			children = (
-				2DE88D881807FF6E00FF4E5F /* EqatecAnalyticsPlugin.h */,
-				2DE88D891807FF6E00FF4E5F /* EqatecAnalyticsPlugin.m */,
-				2D763C0D181166710089B237 /* EQATECAnalyticsMonitor.h */,
+				857B070C1A3F247200C764A2 /* EqatecAnalyticsPlugin.h */,
+				857B070F1A3F248900C764A2 /* EQATECAnalyticsMonitor.h */,
+				857B070D1A3F247200C764A2 /* EqatecAnalyticsPlugin.mm */,
 				2D055B061806958800CED2AC /* Supporting Files */,
 			);
 			path = EqatecAnalyticsPluginXCode;
@@ -163,7 +163,7 @@
 		2D055AF81806958800CED2AC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Telerik;
 			};
 			buildConfigurationList = 2D055AFB1806958800CED2AC /* Build configuration list for PBXProject "EqatecAnalyticsPluginXCode" */;
@@ -199,7 +199,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DE88D8A1807FF6E00FF4E5F /* EqatecAnalyticsPlugin.m in Sources */,
+				857B070E1A3F247200C764A2 /* EqatecAnalyticsPlugin.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,7 +225,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -263,7 +262,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -310,6 +308,7 @@
 					"$(inherited)",
 					/Users/support/Documents/EqatecAnalytics/Source/Monitor/AnalyticsMonitorCordova/EqatecAnalyticsPlugin/EqatecAnalytics/src/ios,
 					/Users/support/Documents/EqatecAnalytics/Source/Monitor/Cpp/Apple/iOS/EQATECAnalyticsMonitoriOS/framework,
+					"/Users/flamsholt/cordova-plugin-analytics/plugin/lib/ios",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -336,6 +335,7 @@
 					"$(inherited)",
 					/Users/support/Documents/EqatecAnalytics/Source/Monitor/AnalyticsMonitorCordova/EqatecAnalyticsPlugin/EqatecAnalytics/src/ios,
 					/Users/support/Documents/EqatecAnalytics/Source/Monitor/Cpp/Apple/iOS/EQATECAnalyticsMonitoriOS/framework,
+					"/Users/flamsholt/cordova-plugin-analytics/plugin/lib/ios",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -346,7 +346,6 @@
 		2D055B271806958900CED2AC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -367,7 +366,6 @@
 		2D055B281806958900CED2AC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

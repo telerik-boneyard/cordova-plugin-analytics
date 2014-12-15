@@ -7,3 +7,13 @@ test/wp/PluginWP8/PluginWP8/obj/
 test/android/bin
 test/android/gen/com/telerik/plugin/eqatecanalytics/BuildConfig.java
 test/android/gen/com/telerik/plugin/eqatecanalytics/R.java
+
+*.xccheckout
+
+*.xcuserstate
+
+*.xcsettings
+
+*.xcscheme
+
+*.plist
