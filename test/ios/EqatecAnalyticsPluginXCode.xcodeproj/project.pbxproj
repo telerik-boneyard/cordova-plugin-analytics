@@ -298,7 +298,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/support/Documents/EqatecAnalytics/Source/Monitor/AnalyticsMonitorCordova/EqatecAnalyticsPluginXCode/Framework,
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/EQATECAnalyticsMonitoriOS-cxwssovvvymzwqffuihddawcglub/Build/Products/Debug-iphoneos",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EqatecAnalyticsPluginXCode/EqatecAnalyticsPluginXCode-Prefix.pch";
@@ -325,7 +324,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/support/Documents/EqatecAnalytics/Source/Monitor/AnalyticsMonitorCordova/EqatecAnalyticsPluginXCode/Framework,
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/EQATECAnalyticsMonitoriOS-cxwssovvvymzwqffuihddawcglub/Build/Products/Debug-iphoneos",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EqatecAnalyticsPluginXCode/EqatecAnalyticsPluginXCode-Prefix.pch";
