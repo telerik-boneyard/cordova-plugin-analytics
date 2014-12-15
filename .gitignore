@@ -1,0 +1,6 @@
+**/*.xcworkspacedata
+**/*.jmconfig
+*.suo
+**/org.eclipse.jdt.core.prefs
+test/wp/PluginWP8/PluginWP8/Bin
+test/wp/PluginWP8/PluginWP8/obj/
