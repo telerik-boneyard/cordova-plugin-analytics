@@ -4,3 +4,6 @@
 **/org.eclipse.jdt.core.prefs
 test/wp/PluginWP8/PluginWP8/Bin
 test/wp/PluginWP8/PluginWP8/obj/
+test/android/bin
+test/android/gen/com/telerik/plugin/eqatecanalytics/BuildConfig.java
+test/android/gen/com/telerik/plugin/eqatecanalytics/R.java

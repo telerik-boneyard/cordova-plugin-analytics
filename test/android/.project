@@ -34,7 +34,7 @@
 		<link>
 			<name>EqatecAnalyticsSrcAndroid</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/EqatecAnalytics/src/android</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/plugin/src/android</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

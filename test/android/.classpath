@@ -6,6 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="libs/cordova-3.0.0.jar"/>
-	<classpathentry kind="lib" path="../EqatecAnalytics/lib/android/analyticsmonitor.jar"/>
+	<classpathentry kind="lib" path="../../plugin/lib/android/analyticsmonitor.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
