@@ -44,7 +44,7 @@
     <source-file src="src/ios/EqatecAnalyticsPlugin.mm" />
     <header-file src="lib/ios/EQATECAnalyticsMonitor.h" />
     <source-file src="lib/ios/libEQATECAnalyticsMonitoriOS.a" framework="true" />
-    <framework src="libstdc++.dylib"/>
+    <framework src="libc++.dylib"/>
     <config-file target="config.xml" parent="/*">
       <feature name="EqatecAnalytics">
         <param name="ios-package" value="EqatecAnalyticsPlugin" />
