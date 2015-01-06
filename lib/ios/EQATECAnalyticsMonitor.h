@@ -26,7 +26,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-#define EQATEC_ANALYTICS_MONITOR_VERSION "3.2.128"
+#define EQATEC_ANALYTICS_MONITOR_VERSION "3.2.129"
 
 // forward declarations
 @protocol EQATECLogAnalyticsMonitor;
