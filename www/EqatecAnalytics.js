@@ -1,7 +1,7 @@
 /**
  * This is the API documentation for the Telerik Analytics plugin for AppBuilder.
  *
- * This documentation is for version 99.99.99.99.
+ * This documentation is for version 3.3.1.
  *
  * To start using this module you should enable the plugin in AppBuilder
  * (in project Properties &gt; Plugins &gt; Integrated Plugins &gt; Telerik Analytics)
@@ -69,7 +69,7 @@ var AnalyticsMonitorFactory = function() {};
  */
 var AnalyticsMonitor = function() {};
 
-var iceniumPluginVersion = "99.99.99.99";
+var iceniumPluginVersion = "3.3.1";
 
 
 /**
