@@ -28,6 +28,21 @@ public class EqatecAnalyticsPlugin extends CordovaPlugin
   @Override
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException
   {
+    if (action.equals("GetVariables")) {
+      JSONObject data = new JSONObject();
+      for (int i = 0; i < args.length(); i++) {
+        try {
+          String variableName = args.getString(i);
+          int appResId = cordova.getActivity().getResources().getIdentifier(variableName, "string", cordova.getActivity().getPackageName());
+          String variableValue = cordova.getActivity().getString(appResId);
+          data.put(variableName, variableValue);
+        } catch(Exception ex) {
+        }
+      }
+      callbackContext.success(data);
+      return true;
+    }
+    
     if (action.equals("FactoryCreateMonitor")) {
       String productId = args.getString(0);
       String version = args.getString(1);

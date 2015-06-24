@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Windows;
 using System.Text;
 using System.Threading.Tasks;
 using EQATEC.Analytics.Monitor;
@@ -512,6 +516,47 @@ namespace Cordova.Extension.Commands
       }
     }
 
+    public void GetVariables(string options)
+    {
+      try
+      {
+          var args = ParseOptions(options);
+          var result = new Dictionary<string, string>();
+          foreach (string name in args) 
+          {
+            var value = GetVariable(name);
+            if (name != null)
+            {
+              result[name] = value;
+            }
+          }
 
+          string json = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+          var pluginResult = new PluginResult(PluginResult.Status.OK, json);
+          SendResult(CurrentCommandCallbackId, pluginResult);
+      }
+      catch (Exception ex)
+      {
+        LogError(string.Format("GetVariables failed: {0}", ex.Message));
+        SendResult(CurrentCommandCallbackId, PluginResult.Status.JSON_EXCEPTION);
+      }
+    }
+
+    private static string GetVariable(string name)
+    {
+      var streamInfo = Application.GetResourceStream(new Uri("config.xml", UriKind.Relative));
+      var document = XDocument.Load(streamInfo.Stream);
+      var value = 
+        (from results in document.Descendants()
+         where results.Name.LocalName == "preference" && ((string)results.Attribute("name") == name)
+         select (string)results.Attribute("value")
+        ).FirstOrDefault();
+      if (value != null)
+      {
+        return value;
+      }
+
+      return null;
+    }
   }
 }
