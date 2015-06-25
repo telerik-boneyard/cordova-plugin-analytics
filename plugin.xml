@@ -61,7 +61,7 @@
       </feature>
     </config-file>
     <config-file target="*-Info.plist" parent="autoTrackKendoEvents">
-      <string>$KENDO_AUTO_TRACK</string>
+      <string>$AUTO_TRACK_KENDO_EVENTS</string>
     </config-file>
     <config-file target="*-Info.plist" parent="productId">
       <string>$PRODUCT_ID</string>
