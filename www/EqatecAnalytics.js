@@ -667,10 +667,14 @@ module.exports = EqatecAnalytics;
 
 (function(window, undefined) {
     var monitor = window._eqatecmonitor = {
+        autoTrackExceptions: false,
         autoTrackKendoEvents: false,
         isStarted: false,
+        trackingEnabled: function() {
+            return this.autoTrackExceptions || this.autoTrackKendoEvents;
+        },
         start: function (productId, productVersion) {
-            if (this.autoTrackKendoEvents && !this.isStarted) {
+            if (this.trackingEnabled() && !this.isStarted) {
                 var factory = window.plugins.EqatecAnalytics.Factory;
                 var settings = factory.CreateSettings(productId);
                 if (typeof productVersion !== 'undefined' && productVersion !== null) {
@@ -681,48 +685,48 @@ module.exports = EqatecAnalytics;
                 factory.CreateMonitorWithSettings(settings, function() {
                     window.plugins.EqatecAnalytics.Monitor.Start();
                     that.isStarted = true;
+
+                    if (that.autoTrackExceptions) {
+                        window.onerror = function (message, url, row, col, err) {
+                            that.trackException(err, err.message);
+                        };
+                    }
                 }, function(msg) {
                     console.log("Error creating monitor: " + msg);
                 });
             }
         },
         stop: function() {
-            if (this.autoTrackKendoEvents && this.isStarted) {
+            if (this.isStarted) {
                 window.plugins.EqatecAnalytics.Monitor.Stop();
             }
         },
         trackFeature: function(featureName) {
-            if (this.autoTrackKendoEvents && this.isStarted) {
+            if (this.isStarted) {
                 window.plugins.EqatecAnalytics.Monitor.TrackFeature(featureName);
                 this.forceSync();
             }
         },
         trackFeatureStart: function(featureName) {
-            if (this.autoTrackKendoEvents && this.isStarted) {
+            if (this.isStarted) {
                 window.plugins.EqatecAnalytics.Monitor.TrackFeatureStart(featureName);
             }
         },
         trackFeatureStop: function(featureName) {
-            if (this.autoTrackKendoEvents && this.isStarted) {
+            if (this.isStarted) {
                 window.plugins.EqatecAnalytics.Monitor.TrackFeatureStop(featureName);
                 this.forceSync();
             }
         },
         trackException: function(ex, message) {
-            if (this.autoTrackKendoEvents && this.isStarted) {
+            if (this.isStarted) {
                 window.plugins.EqatecAnalytics.Monitor.TrackExceptionMessage(ex, message);
             }
         },
         forceSync: function() {
-            if (this.autoTrackKendoEvents && this.isStarted) {
+            if (this.isStarted) {
                 window.plugins.EqatecAnalytics.Monitor.ForceSync();
             }
-        }
-    };
-
-    window.onerror = function (message, url, row, col, err) {
-        if (monitor.isStarted) {
-            monitor.trackException(err, err.message);
         }
     };
 
@@ -737,15 +741,15 @@ module.exports = EqatecAnalytics;
           var productId = data.productId;
           var productVersion = data.productVersion;
           monitor.autoTrackKendoEvents = (data.autoTrackKendoEvents || '').toLowerCase() === 'true';
-
+          monitor.autoTrackExceptions = (data.autoTrackExceptions || '').toLowerCase() === 'true';
           window.plugins.EqatecAnalytics.Factory.pluginVariables = {
               productId: productId,
               productVersion: productVersion
           };
           monitor.start(productId, productVersion);
-      }, function(err) { 
+      }, function(err) {
           console.log('Unable to read required plugin variables: ' + err);
-      }, 'EqatecAnalytics', 'GetVariables', [ 'productId', 'productVersion', 'autoTrackKendoEvents' ]);
+      }, 'EqatecAnalytics', 'GetVariables', [ 'productId', 'productVersion', 'autoTrackKendoEvents', 'autoTrackExceptions' ]);
     }, true);
 })(window);
 
