@@ -737,19 +737,21 @@ module.exports = EqatecAnalytics;
     };
 
     window.addEventListener('deviceready', function () {
-      cordova.exec(function(data) {
-          var productId = data.productId;
-          var productVersion = data.productVersion;
-          monitor.autoTrackKendoEvents = (data.autoTrackKendoEvents || '').toLowerCase() === 'true';
-          monitor.autoTrackExceptions = (data.autoTrackExceptions || '').toLowerCase() === 'true';
-          window.plugins.EqatecAnalytics.Factory.pluginVariables = {
-              productId: productId,
-              productVersion: productVersion
-          };
-          monitor.start(productId, productVersion);
-      }, function(err) {
-          console.log('Unable to read required plugin variables: ' + err);
-      }, 'EqatecAnalytics', 'GetVariables', [ 'productId', 'productVersion', 'autoTrackKendoEvents', 'autoTrackExceptions' ]);
+      cordova.getAppVersion(function (version) {
+          cordova.exec(function(data) {
+              var productId = data.productId;
+              var productVersion = version != null && version != 'N/A' ? version : null;
+              monitor.autoTrackKendoEvents = (data.autoTrackKendoEvents || '').toLowerCase() === 'true';
+              monitor.autoTrackExceptions = (data.autoTrackExceptions || '').toLowerCase() === 'true';
+              window.plugins.EqatecAnalytics.Factory.pluginVariables = {
+                  productId: productId,
+                  productVersion: productVersion
+              };
+              monitor.start(productId, productVersion);
+          }, function(err) {
+              console.log('Unable to read required plugin variables: ' + err);
+          }, 'EqatecAnalytics', 'GetVariables', [ 'productId', 'autoTrackKendoEvents', 'autoTrackExceptions' ]);
+      });
     }, true);
 })(window);
 

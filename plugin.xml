@@ -5,6 +5,8 @@
     id="com.telerik.plugin.telerikanalytics"
     version="3.3.2">
 
+  <dependency id="uk.co.whiteoctober.cordova.appversion" url="https://github.com/Telerik-Verified-Plugins/AppVersion" commit="master" />
+
   <engines>
     <engine name="cordova" version=">=3.4.0" />
   </engines>
@@ -23,7 +25,6 @@
   </js-module>
 
   <preference name="PRODUCT_ID" />
-  <preference name="PRODUCT_VERSION" />
   <preference name="AUTO_TRACK_KENDO_EVENTS" />
   <preference name="AUTO_TRACK_EXCEPTIONS" />
 
@@ -46,7 +47,6 @@
       <string name="autoTrackExceptions">$AUTO_TRACK_EXCEPTIONS</string>
       <string name="autoTrackKendoEvents">$AUTO_TRACK_KENDO_EVENTS</string>
       <string name="productId">$PRODUCT_ID</string>
-      <string name="productVersion">$PRODUCT_VERSION</string>
     </config-file>
   </platform>
   
@@ -71,9 +71,6 @@
     <config-file target="*-Info.plist" parent="productId">
       <string>$PRODUCT_ID</string>
     </config-file>
-    <config-file target="*-Info.plist" parent="productVersion">
-      <string>$PRODUCT_VERSION</string>
-    </config-file>
   </platform>
   
   <!-- wp8 -->
@@ -88,7 +85,6 @@
       <preference name="autoTrackExceptions" value="$AUTO_TRACK_EXCEPTIONS" />
       <preference name="autoTrackKendoEvents" value="$AUTO_TRACK_KENDO_EVENTS" />
       <preference name="productId" value="$PRODUCT_ID" />
-      <preference name="productVersion" value="$PRODUCT_VERSION" />
     </config-file>
     <config-file target="WMAppManifest.xml" parent="/Deployment/App/Capabilities">
       <Capability Name="ID_CAP_NETWORKING" />
