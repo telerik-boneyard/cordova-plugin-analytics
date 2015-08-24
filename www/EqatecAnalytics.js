@@ -242,24 +242,33 @@ AnalyticsMonitorFactory.prototype.IsMonitorCreated = function(successCallback)
  */
 AnalyticsMonitorFactory.prototype.CreateSettings = function(productId, version)
 {
+  if (typeof this.pluginVariables !== 'undefined' && this.pluginVariables != null) {
+      if (typeof productId === 'undefined' || productId == null) {
+        productId = this.pluginVariables.productId;
+      }
+
+      if (typeof version == 'undefined' || version == null) {
+        version = this.pluginVariables.productVersion;
+      }
+  }
+
   var INTEGER_MAX_VALUE = 0x7FFFFFFF;  // max 32-bit signed integer value
   var settings = {
-	"ProductId": productId,
-	"Version": version || "",
-	"LocationCoordinates": { "Latitude":0.0, "Longitude":0.0 },
-	"ProxyConfig": { "Host":"", "Port":0, "UserName":"", "Password":"" },
-	"LoggingInterface":null,
-	"DailyNetworkUtilizationInKB": INTEGER_MAX_VALUE, 
-	"MaxStorageSizeInKB": INTEGER_MAX_VALUE,
-	"ServerUri": "http://" + productId.replace("-", "") + ".monitor-eqatec.com/",
-	"StorageSaveInterval": 60,
-	"SynchronizeAutomatically": true,
-	"TestMode": false,
-	"UseSsl": false,
+    "ProductId": productId,
+    "Version": version || "",
+    "LocationCoordinates": { "Latitude":0.0, "Longitude":0.0 },
+    "ProxyConfig": { "Host":"", "Port":0, "UserName":"", "Password":"" },
+    "LoggingInterface":null,
+    "DailyNetworkUtilizationInKB": INTEGER_MAX_VALUE, 
+    "MaxStorageSizeInKB": INTEGER_MAX_VALUE,
+    "ServerUri": "http://" + productId.replace("-", "") + ".monitor-eqatec.com/",
+    "StorageSaveInterval": 60,
+    "SynchronizeAutomatically": true,
+    "TestMode": false,
+    "UseSsl": false,
   };
   return settings;
-}
-
+};
 
 /**
  * Create the logger for outputting diagnostics from the monitor. You can build your
@@ -637,3 +646,340 @@ var EqatecAnalytics = {
 	Monitor: new AnalyticsMonitor(),
 };
 module.exports = EqatecAnalytics;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(function(window, undefined) {
+    var monitor = window._eqatecmonitor = {
+        autoTrackExceptions: false,
+        autoTrackKendoEvents: false,
+        isStarted: false,
+        trackingEnabled: function() {
+            return this.autoTrackExceptions || this.autoTrackKendoEvents;
+        },
+        start: function (productId, productVersion) {
+            if (this.trackingEnabled() && !this.isStarted) {
+                var factory = window.plugins.EqatecAnalytics.Factory;
+                var settings = factory.CreateSettings(productId);
+                if (typeof productVersion !== 'undefined' && productVersion !== null) {
+                    settings.Version = productVersion;
+                }
+
+                var that = this;
+                factory.CreateMonitorWithSettings(settings, function() {
+                    window.plugins.EqatecAnalytics.Monitor.Start();
+                    that.isStarted = true;
+
+                    if (that.autoTrackExceptions) {
+                        window.onerror = function (message, url, row, col, err) {
+                            if (!err) {
+                                var colonIndex = message.indexOf(":");
+
+                                err = {
+                                    name: message.substr(0, colonIndex),
+                                    message: message.substr(colonIndex + 2),
+                                    stack: "\n\tat (" + url + (row ? ":" + row : "") + (col ? ":" + col : "") + ")\n"
+                                };
+                            }
+
+                            that.trackException(err, err.message);
+                        };
+                    }
+                }, function(msg) {
+                    console.log("Error creating monitor: " + msg);
+                });
+            }
+        },
+        stop: function() {
+            if (this.isStarted) {
+                window.plugins.EqatecAnalytics.Monitor.Stop();
+            }
+        },
+        trackFeature: function(featureName) {
+            if (this.isStarted) {
+                window.plugins.EqatecAnalytics.Monitor.TrackFeature(featureName);
+                this.forceSync();
+            }
+        },
+        trackFeatureStart: function(featureName) {
+            if (this.isStarted) {
+                window.plugins.EqatecAnalytics.Monitor.TrackFeatureStart(featureName);
+            }
+        },
+        trackFeatureStop: function(featureName) {
+            if (this.isStarted) {
+                window.plugins.EqatecAnalytics.Monitor.TrackFeatureStop(featureName);
+                this.forceSync();
+            }
+        },
+        trackException: function(ex, message) {
+            if (this.isStarted) {
+                window.plugins.EqatecAnalytics.Monitor.TrackExceptionMessage(ex, message);
+            }
+        },
+        forceSync: function() {
+            if (this.isStarted) {
+                window.plugins.EqatecAnalytics.Monitor.ForceSync();
+            }
+        }
+    };
+
+    window.onbeforeunload = function() {
+        if (monitor.isStarted) {
+            monitor.stop();
+        }
+    };
+
+    window.addEventListener('deviceready', function () {
+      cordova.getAppVersion(function (version) {
+          cordova.exec(function(data) {
+              var productId = data.productId;
+              var productVersion = version != null && version != 'N/A' ? version : null;
+              monitor.autoTrackKendoEvents = (data.autoTrackKendoEvents || '').toLowerCase() === 'true';
+              monitor.autoTrackExceptions = (data.autoTrackExceptions || '').toLowerCase() === 'true';
+              window.plugins.EqatecAnalytics.Factory.pluginVariables = {
+                  productId: productId,
+                  productVersion: productVersion
+              };
+              monitor.start(productId, productVersion);
+          }, function(err) {
+              console.log('Unable to read required plugin variables: ' + err);
+          }, 'EqatecAnalytics', 'GetVariables', [ 'productId', 'autoTrackKendoEvents', 'autoTrackExceptions' ]);
+      });
+    }, true);
+})(window);
+
+
+(function(window, undefined) {
+    var analytics,
+        monitor = window._eqatecmonitor,
+        relatives = {
+            external: "ExternalNavigation",
+            modalview: "ModalView",
+            popover: "PopOver",
+            drawer: "Drawer",
+            actionsheet: "ActionSheet"
+        },
+        performance = (window.performance && window.performance.now ? window.performance : {
+            offset: Date.now(),
+            now: function now() {
+                return Date.now() - this.offset;
+            }
+        }),
+
+        Analytics = function () {
+            var $ = window.jQuery,
+                that = this,
+                viewLoadTimeStamp,
+                viewShowTimeStamp,
+                viewRenderTimeStamp,
+                viewInteractionTimeStamp,
+                proxy = function (callback) {
+                    return $.proxy(callback, that);
+                },
+                getViewName = function(view) {
+                    if (typeof view === 'string') {
+                        var lastSlashIndex = view.lastIndexOf('/');
+                        if (lastSlashIndex < 0) {
+                            lastSlashIndex = 0;
+                        } else {
+                            lastSlashIndex++;
+                        }
+
+                        var lastDotIndex = view.lastIndexOf('.');
+                        if (lastDotIndex < 0) {
+                            lastDotIndex = view.length;
+                        }
+
+                        var result = view.slice(lastSlashIndex, lastDotIndex).replace(/[^a-z,0-9,\/,\.]/gi, '');
+                        return result;
+                    }
+                    var name = view.id || view.element.attr("id") || '';
+                    return getViewName(name);
+                };
+
+            Analytics.prototype.bindViewEvents = function(e) {
+                e.view.trackingEnabled = (e.view.element.attr("data-track") === "true");
+
+                if (!e.view.BoundAnalytics) {
+                    e.view.bind(this.viewEvents);
+                    e.view.BoundAnalytics = true;
+                }
+            };
+
+            $.extend(Analytics.prototype, {
+                init: proxy(function (e) {
+                    viewLoadTimeStamp = performance.now();
+
+                    that.viewEngine = e.sender.pane.viewEngine;
+                    that.viewEngine.bind(this.viewEngineEvents);
+                    that.viewEngine.viewContainer.bind(this.viewContainerEvents);
+                }),
+
+                viewEngineEvents: {
+                    loadStart: proxy(function(e) {
+                        viewLoadTimeStamp = performance.now();
+                        monitor.trackFeatureStart('ViewsLoadTime.' + getViewName(e.sender.url));
+                    }),
+
+                    loadComplete: proxy(function(e) {
+                        monitor.trackFeatureStop('ViewsLoadTime.' + getViewName(e.sender.url));
+                        // monitor.trackFeatureValue("View load - '" + e.sender.url + "'",
+                        //                           performance.now() - viewLoadTimeStamp);
+                    }),
+
+                    sameViewRequested: proxy(function(e) {
+                        monitor.trackFeature('SameViewRequests.' + getViewName(e.sender.url));
+                    }),
+
+                    viewTypeDetermined: proxy(function(e) {
+                        if (e.url) {
+                            // Navigation request
+                            monitor.trackFeature('Views.' + getViewName(e.url));
+                        }
+                    }),
+
+                    viewShow: proxy(function (e) {
+                        viewInteractionTimeStamp = performance.now();
+                        var name = getViewName(e.view);
+                        monitor.trackFeatureStart('ViewsInteraction.' + name);
+                        monitor.trackFeatureStop('ViewsShow.' + name);
+                    })
+                },
+
+                viewContainerEvents: {
+                    accepted: proxy(this.bindViewEvents)
+                },
+
+                viewEvents: {
+                    init: function (e) {
+                        viewRenderTimeStamp = performance.now();
+                        monitor.trackFeatureStart('ViewsRender.' + getViewName(e.view));
+
+                        if (e.view && e.view.panes) {
+                            $.each(e.view.panes, function () {
+                                this.viewEngine.bind(that.viewEngineEvents);
+                                this.viewEngine.viewContainer.bind(that.viewContainerEvents);
+                            });
+                        }
+                    },
+
+                    beforeShow: function () {
+                        viewRenderTimeStamp = performance.now();
+                    },
+
+                    show: proxy(function(e) {
+                        viewShowTimeStamp = performance.now();
+                        var name = getViewName(e.view);
+                        monitor.trackFeatureStop('ViewsRender.' + name);
+                        monitor.trackFeatureStart('ViewsShow.' + name);
+                    }),
+
+                    beforeHide: proxy(function (e) {
+                        monitor.trackFeatureStop('ViewsInteraction.' + getViewName(e.view));
+                    })
+                },
+
+                relEvents: {
+                    open: proxy(function (e) {
+                        if (!e.sender.AlreadyOpened) {
+                            //monitor.trackFeatureValue(e.sender.options.name + " open", "#" + e.sender.element.attr("id"));
+                        }
+
+                        e.sender.AlreadyOpened = true;
+                    }),
+                    close: proxy(function (e) {
+                        //monitor.trackFeatureValue(e.sender.options.name + " close", "#" + e.sender.element.attr("id"));
+                        e.sender.AlreadyOpened = false;
+                    })
+                }
+            });
+
+            Analytics.prototype.relEvents.show = Analytics.prototype.relEvents.open;
+            Analytics.prototype.relEvents.hide = Analytics.prototype.relEvents.close;
+        };
+
+
+    var kendo = window.kendo,
+        oldPlatform;
+
+    if (kendo && kendo.mobile && kendo.mobile.Application) {
+        oldPlatform = kendo.mobile.Application.prototype._setupPlatform;
+
+        kendo.mobile.Application.prototype._setupPlatform = function () {
+            var pane = kendo.mobile.ui.Pane,
+                $ = window.jQuery,
+                oldMouseup = pane.prototype._mouseup;
+
+            $.extend(pane.prototype, {
+                _mouseup: function(e) {
+                    var target = e.currentTarget, rel, href, text, feature,
+                        isBack = target.hash === "#:back",
+                        view = kendo.widgetInstance($(target).closest(".km-view"), kendo.mobile.ui);
+
+                    if (target && (view.trackingEnabled || isBack)) {
+                        feature = target.getAttribute("data-track-feature");
+                        rel = target.getAttribute("data-rel");
+                        href = target.getAttribute("href");
+                        text = target.textContent || target.getAttribute("data-icon");
+
+                        if (typeof feature !== 'undefined' && feature !== null) {
+                            monitor.trackFeature(feature);
+                        }
+
+                        // if (isBack) {
+                        //     monitor.trackFeatureValue("Navigation request", target.hash);
+                        // } else {
+                        //     monitor.trackFeatureValue("App link click", text);
+                        // }
+                    }
+
+                    if (rel in relatives) {
+                        if (rel != "external") {
+                            var widget = kendo.widgetInstance($(href), kendo.mobile.ui);
+
+                            if (!widget.BoundRelatives) {
+                                widget.bind(analytics.relEvents);
+                                analytics.bindViewEvents({ view: widget });
+
+                                if (widget.pane && widget.pane.viewEngine !== analytics.viewEngine) {
+                                    widget.pane.viewEngine.bind(analytics.viewEngineEvents);
+                                    widget.pane.viewEngine.viewContainer.bind(analytics.viewContainerEvents);
+                                }
+
+                                widget.BoundRelatives = true;
+                            }
+                        }
+
+                        var featureName = 'Widgets.' + relatives[rel];
+                        monitor.trackFeature(featureName);
+                    }
+
+                    oldMouseup.apply(this, arguments);
+                }
+            });
+
+            analytics = new Analytics();
+
+            oldPlatform.apply(this, arguments);
+
+            this.bind("init", analytics.init);
+        };
+    }
+})(window);
