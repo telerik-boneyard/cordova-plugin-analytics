@@ -688,6 +688,16 @@ module.exports = EqatecAnalytics;
 
                     if (that.autoTrackExceptions) {
                         window.onerror = function (message, url, row, col, err) {
+                            if (!err) {
+                                var colonIndex = message.indexOf(":");
+
+                                err = {
+                                    name: message.substr(0, colonIndex),
+                                    message: message.substr(colonIndex + 2),
+                                    stack: "\n\tat (" + url + (row ? ":" + row : "") + (col ? ":" + col : "") + ")\n"
+                                };
+                            }
+
                             that.trackException(err, err.message);
                         };
                     }
@@ -766,7 +776,7 @@ module.exports = EqatecAnalytics;
             drawer: "Drawer",
             actionsheet: "ActionSheet"
         },
-        performance = (window.performance || {
+        performance = (window.performance && window.performance.now ? window.performance : {
             offset: Date.now(),
             now: function now() {
                 return Date.now() - this.offset;
