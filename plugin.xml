@@ -42,8 +42,7 @@
   	  <uses-permission android:name="android.permission.INTERNET" />
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     </config-file>
-    <source-file src="src/android/res/values/analytics.xml" target-dir="res/values" />
-    <config-file target="res/values/analytics.xml" parent="/*">
+    <config-file target="res/values/strings.xml" parent="/*">
       <string name="autoTrackExceptions">$AUTO_TRACK_EXCEPTIONS</string>
       <string name="autoTrackKendoEvents">$AUTO_TRACK_KENDO_EVENTS</string>
       <string name="productId">$PRODUCT_ID</string>
