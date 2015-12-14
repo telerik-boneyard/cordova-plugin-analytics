@@ -750,14 +750,16 @@ module.exports = EqatecAnalytics;
       cordova.getAppVersion(function (version) {
           cordova.exec(function(data) {
               var productId = data.productId;
-              var productVersion = version != null && version != 'N/A' ? version : null;
-              monitor.autoTrackKendoEvents = (data.autoTrackKendoEvents || '').toLowerCase() === 'true';
-              monitor.autoTrackExceptions = (data.autoTrackExceptions || '').toLowerCase() === 'true';
-              window.plugins.EqatecAnalytics.Factory.pluginVariables = {
-                  productId: productId,
-                  productVersion: productVersion
-              };
-              monitor.start(productId, productVersion);
+              if(productId !== "YourKeyHere"){
+                  var productVersion = version != null && version != 'N/A' ? version : null;
+                  monitor.autoTrackKendoEvents = (data.autoTrackKendoEvents || '').toLowerCase() === 'true';
+                  monitor.autoTrackExceptions = (data.autoTrackExceptions || '').toLowerCase() === 'true';
+                  window.plugins.EqatecAnalytics.Factory.pluginVariables = {
+                      productId: productId,
+                      productVersion: productVersion
+                  };
+                  monitor.start(productId, productVersion);
+              }
           }, function(err) {
               console.log('Unable to read required plugin variables: ' + err);
           }, 'EqatecAnalytics', 'GetVariables', [ 'productId', 'autoTrackKendoEvents', 'autoTrackExceptions' ]);

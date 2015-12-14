@@ -24,9 +24,9 @@
     <clobbers target="plugins.EqatecAnalytics" />
   </js-module>
 
-  <preference name="PRODUCT_ID" />
-  <preference name="AUTO_TRACK_KENDO_EVENTS" />
-  <preference name="AUTO_TRACK_EXCEPTIONS" />
+  <preference name="PRODUCT_ID" default="YourKeyHere"/>
+  <preference name="AUTO_TRACK_KENDO_EVENTS" default="false"/>
+  <preference name="AUTO_TRACK_EXCEPTIONS" default="false"/>
 
   <!-- android -->
   <platform name="android">
