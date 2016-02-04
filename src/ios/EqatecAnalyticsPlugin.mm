@@ -477,7 +477,7 @@
 
   CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:values];
   NSString *callbackId = [command callbackId];
-  [self success:result callbackId:callbackId];
+  [self.commandDelegate sendPluginResult:result callbackId:callbackId];
 }
 
 // Release doesn't work for now!!!
