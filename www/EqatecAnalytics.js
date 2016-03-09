@@ -931,46 +931,48 @@ module.exports = EqatecAnalytics;
 
             $.extend(pane.prototype, {
                 _mouseup: function(e) {
-                    var target = e.currentTarget, rel, href, text, feature,
-                        isBack = target.hash === "#:back",
-                        view = kendo.widgetInstance($(target).closest(".km-view"), kendo.mobile.ui);
+                    if (monitor && monitor.autoTrackKendoEvents === true) {
+                        var target = e.currentTarget, rel, href, text, feature,
+                            isBack = target.hash === "#:back",
+                            view = kendo.widgetInstance($(target).closest(".km-view"), kendo.mobile.ui);
 
-                    if (target && (view.trackingEnabled || isBack)) {
-                        feature = target.getAttribute("data-track-feature");
-                        rel = target.getAttribute("data-rel");
-                        href = target.getAttribute("href");
-                        text = target.textContent || target.getAttribute("data-icon");
+                        if (target && ((view && view.trackingEnabled) || isBack)) {
+                            feature = target.getAttribute("data-track-feature");
+                            rel = target.getAttribute("data-rel");
+                            href = target.getAttribute("href");
+                            text = target.textContent || target.getAttribute("data-icon");
 
-                        if (typeof feature !== 'undefined' && feature !== null) {
-                            monitor.trackFeature(feature);
-                        }
-
-                        // if (isBack) {
-                        //     monitor.trackFeatureValue("Navigation request", target.hash);
-                        // } else {
-                        //     monitor.trackFeatureValue("App link click", text);
-                        // }
-                    }
-
-                    if (rel in relatives) {
-                        if (rel != "external") {
-                            var widget = kendo.widgetInstance($(href), kendo.mobile.ui);
-
-                            if (!widget.BoundRelatives) {
-                                widget.bind(analytics.relEvents);
-                                analytics.bindViewEvents({ view: widget });
-
-                                if (widget.pane && widget.pane.viewEngine !== analytics.viewEngine) {
-                                    widget.pane.viewEngine.bind(analytics.viewEngineEvents);
-                                    widget.pane.viewEngine.viewContainer.bind(analytics.viewContainerEvents);
-                                }
-
-                                widget.BoundRelatives = true;
+                            if (typeof feature !== 'undefined' && feature !== null) {
+                                monitor.trackFeature(feature);
                             }
+
+                            // if (isBack) {
+                            //     monitor.trackFeatureValue("Navigation request", target.hash);
+                            // } else {
+                            //     monitor.trackFeatureValue("App link click", text);
+                            // }
                         }
 
-                        var featureName = 'Widgets.' + relatives[rel];
-                        monitor.trackFeature(featureName);
+                        if (rel in relatives) {
+                            if (rel != "external") {
+                                var widget = kendo.widgetInstance($(href), kendo.mobile.ui);
+
+                                if (widget && !widget.BoundRelatives) {
+                                    widget.bind(analytics.relEvents);
+                                    analytics.bindViewEvents({ view: widget });
+
+                                    if (widget.pane && widget.pane.viewEngine !== analytics.viewEngine) {
+                                        widget.pane.viewEngine.bind(analytics.viewEngineEvents);
+                                        widget.pane.viewEngine.viewContainer.bind(analytics.viewContainerEvents);
+                                    }
+
+                                    widget.BoundRelatives = true;
+                                }
+                            }
+
+                            var featureName = 'Widgets.' + relatives[rel];
+                            monitor.trackFeature(featureName);
+                        }
                     }
 
                     oldMouseup.apply(this, arguments);
