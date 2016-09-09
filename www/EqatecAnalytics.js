@@ -1,7 +1,7 @@
 /**
  * This is the API documentation for the Telerik Analytics plugin for AppBuilder.
  *
- * This documentation is for version 3.4.1.
+ * This documentation is for version 3.4.2.
  *
  * To start using this module you should enable the plugin in AppBuilder
  * (in project Properties &gt; Plugins &gt; Integrated Plugins &gt; Telerik Analytics).

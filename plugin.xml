@@ -3,9 +3,9 @@
     xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.telerik.plugin.telerikanalytics"
-    version="3.4.1">
+    version="3.4.2">
 
-  <dependency id="uk.co.whiteoctober.cordova.appversion" url="https://github.com/Telerik-Verified-Plugins/AppVersion" commit="master" />
+  <dependency id="cordova-plugin-app-version" url="https://github.com/whiteoctober/cordova-plugin-app-version" commit="master" />
 
   <engines>
     <engine name="cordova" version=">=3.4.0" />
