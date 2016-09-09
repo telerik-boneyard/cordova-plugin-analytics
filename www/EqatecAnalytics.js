@@ -1,11 +1,15 @@
 /**
  * This is the API documentation for the Telerik Analytics plugin for AppBuilder.
  *
- * This documentation is for version 3.3.1.
+ * This documentation is for version 3.4.1.
  *
  * To start using this module you should enable the plugin in AppBuilder
- * (in project Properties &gt; Plugins &gt; Integrated Plugins &gt; Telerik Analytics)
- * and initialize it by including the initialization code example below somewhere in your application.
+ * (in project Properties &gt; Plugins &gt; Integrated Plugins &gt; Telerik Analytics).
+ * If you are using plugin version 3.3.1 or older you should initialize the monitor by
+ * including the initialization code example below somewhere in your application. When enabling
+ * the module you have the possibility to select automatic exception tracking or automatic app feature tracking.
+ * If you choose any of those options the module will start a new Analytics session in the
+ * "deviceready" event without the need to include this code.
  *
  * See also:<br/>
    {{#crossLink "EqatecAnalytics.Factory/CreateMonitor"}}Factory.CreateMonitor{{/crossLink}}<br/>
@@ -16,7 +20,7 @@
       // Create the monitor instance using the unique product key
       // You should add this snippet to your application's startup code somewhere
       var productId = "YOUR-PRODUCT-KEY-HERE";
-      var factory = window.plugins.EqatecAnalytics.Factory;       
+      var factory = window.plugins.EqatecAnalytics.Factory;
       var settings = factory.CreateSettings(productId);
       settings.LoggingInterface = factory.CreateTraceLogger(); // please log
       factory.CreateMonitorWithSettings(settings,
@@ -750,14 +754,16 @@ module.exports = EqatecAnalytics;
       cordova.getAppVersion(function (version) {
           cordova.exec(function(data) {
               var productId = data.productId;
-              var productVersion = version != null && version != 'N/A' ? version : null;
-              monitor.autoTrackKendoEvents = (data.autoTrackKendoEvents || '').toLowerCase() === 'true';
-              monitor.autoTrackExceptions = (data.autoTrackExceptions || '').toLowerCase() === 'true';
-              window.plugins.EqatecAnalytics.Factory.pluginVariables = {
-                  productId: productId,
-                  productVersion: productVersion
-              };
-              monitor.start(productId, productVersion);
+              if(productId !== "YourKeyHere"){
+                  var productVersion = version != null && version != 'N/A' ? version : null;
+                  monitor.autoTrackKendoEvents = (data.autoTrackKendoEvents || '').toLowerCase() === 'true';
+                  monitor.autoTrackExceptions = (data.autoTrackExceptions || '').toLowerCase() === 'true';
+                  window.plugins.EqatecAnalytics.Factory.pluginVariables = {
+                      productId: productId,
+                      productVersion: productVersion
+                  };
+                  monitor.start(productId, productVersion);
+              }
           }, function(err) {
               console.log('Unable to read required plugin variables: ' + err);
           }, 'EqatecAnalytics', 'GetVariables', [ 'productId', 'autoTrackKendoEvents', 'autoTrackExceptions' ]);

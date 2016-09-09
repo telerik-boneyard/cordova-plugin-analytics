@@ -3,7 +3,7 @@
     xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.telerik.plugin.telerikanalytics"
-    version="3.3.2">
+    version="3.4.1">
 
   <dependency id="uk.co.whiteoctober.cordova.appversion" url="https://github.com/Telerik-Verified-Plugins/AppVersion" commit="master" />
 
@@ -24,9 +24,9 @@
     <clobbers target="plugins.EqatecAnalytics" />
   </js-module>
 
-  <preference name="PRODUCT_ID" />
-  <preference name="AUTO_TRACK_KENDO_EVENTS" />
-  <preference name="AUTO_TRACK_EXCEPTIONS" />
+  <preference name="PRODUCT_ID" default="YourKeyHere"/>
+  <preference name="AUTO_TRACK_KENDO_EVENTS" default="false"/>
+  <preference name="AUTO_TRACK_EXCEPTIONS" default="false"/>
 
   <!-- android -->
   <platform name="android">
@@ -42,8 +42,7 @@
   	  <uses-permission android:name="android.permission.INTERNET" />
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     </config-file>
-    <source-file src="src/android/res/values/analytics.xml" target-dir="res/values" />
-    <config-file target="res/values/analytics.xml" parent="/*">
+    <config-file target="res/values/strings.xml" parent="/*">
       <string name="autoTrackExceptions">$AUTO_TRACK_EXCEPTIONS</string>
       <string name="autoTrackKendoEvents">$AUTO_TRACK_KENDO_EVENTS</string>
       <string name="productId">$PRODUCT_ID</string>
