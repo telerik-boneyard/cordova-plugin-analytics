@@ -1,0 +1,20 @@
+{
+  "name": "cordova-telerik-analytics",
+  "version": "3.4.2",
+  "description": "Telerik Analytics Cordova Plugin",
+  "main": "www/EqatecAnalytics.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/telerik/cordova-plugin-analytics.git"
+  },
+  "keywords": [
+    "telerik",
+    "analytics",
+    "cordova"
+  ],
+  "author": "Telerik",
+  "bugs": {
+    "url": "https://github.com/telerik/cordova-plugin-analytics/issues"
+  },
+  "homepage": "http://www.telerik.com/analytics"
+}
